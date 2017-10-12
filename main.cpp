@@ -2,25 +2,6 @@
 #include <iostream>
 #include <vector>
 
-/*void mergesort(int a[], int len) {
-    //create temporary array
-    //to be used by the merge
-    //code
-    int x[] = new int[len];
-    msort(a,x,0,len-1);
-    delete []x;
- }
- void msort(int a[], int x[], int s, int e) {
-    //check for exit from recursion
-    if (e - s < 1) return;
-    int m = (s + e) / 2;
-    msort(left sub array)
-    msort(right sub array)
-    merge while(i <= m and j <= e)
-    if (i <= m)
-    //copy remaining values from left subarray
- }
-*/
 void merge(int a[], int from, int mid, int to) {
     int n = to - from + 1;
     std::vector<int> b(n);

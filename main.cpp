@@ -1,93 +1,89 @@
-#include <iostream>
 #include <cassert>
+#include <iostream>
+#include <vector>
 
-void mergeSort(int a[], int n) {
-    int firstHalf = 0; //half of the array
-    int secondHalf = 0; //other half of the array
-    int array1[firstHalf]; //array for the first half
-    int array2[secondHalf]; //array for second half
-    int minVar = 0; //hold the minimum element
-    int minDex = 0; //hold the index of where the element is located
-    int index1 = 0; //index for first arrays
-    int index2 = 0; //index for second array
+/*void mergesort(int a[], int len) {
+    //create temporary array
+    //to be used by the merge
+    //code
+    int x[] = new int[len];
+    msort(a,x,0,len-1);
+    delete []x;
+ }
+ void msort(int a[], int x[], int s, int e) {
+    //check for exit from recursion
+    if (e - s < 1) return;
+    int m = (s + e) / 2;
+    msort(left sub array)
+    msort(right sub array)
+    merge while(i <= m and j <= e)
+    if (i <= m)
+    //copy remaining values from left subarray
+ }
+*/
+void merge(int a[], int from, int mid, int to) {
+    int n = to - from + 1;
+    std::vector<int> b(n);
+    int i1 = from;
+    int i2 = mid + 1;
+    int j = 0;
 
-    //creates array sizes
-    if (n % 2 == 0) {
-        firstHalf = n/2;
-        secondHalf = n/2;
-    }
-    else {
-        firstHalf = n/2 + 1;
-        secondHalf = n/2;
-    }
-
-    //fill arrays
-    for (int i = 0; i < firstHalf; i++) {
-        array1[i] = a[i];
-    }
-    for (int i = firstHalf; i < n; i++) {
-        array2[i] = a[i];
-    }
-
-    for (int begin = 0; begin < firstHalf; begin++) {
-        minVar = array1[begin];
-        for (int i = begin + 1; i < firstHalf; i++) {
-            if (array1[i] < minVar) {
-                minVar = array1[i];
-                minDex = i;
-            }
+    while (i1 <= mid && i2 <= to) {
+        if (a[i1] < a[i2]) {
+            b[j] = a[i1];
+            i1++;
         }
-        array1[minDex] = array1[begin];
-        a[begin] = minVar;
+        else {
+            b[j] = a[i2];
+            i2++;
+        }
+        j++;
     }
 
-    for (int begin = 0; begin < secondHalf; begin++) {
-        minVar = array2[begin];
-        for (int i = begin + 1; i < secondHalf; i++) {
-            if (array2[i] < minVar) {
-                minVar = array2[i];
-                minDex = i;
-            }
-        }
-        array2[minDex] = array2[begin];
-        a[begin] = minVar;
+    while (i1 <= mid) {
+        b[j] = a[i1];
+        i1++;
+        j++;
     }
-
-    for (int i = 0; i < n; i++) {
-        if (array1[index1] <= array2[index2] && index1 < firstHalf) {
-            a[i] = array1[index1];
-            index1++;
-        }
-        else if (index2 < secondHalf) {
-            a[i] = array2[index2];
-            index2++;
-        }
+    while (i2 <= to) {
+        b[j] = a[i2];
+        i2++;
+        j++;
     }
+    for (j = 0; j < n; j++)
+        a[from + j] = b[j];
 }
 
-bool sorted (const int a[], int n) {
+void merge_sort(int a[], int from, int to) {
+    if (from == to) return;
+    int mid = (from + to) / 2;
+    merge_sort(a, from, mid);
+    merge_sort(a, mid + 1, to);
+    merge(a, from, mid, to);
+}
+
+bool sorted (int a[], int n) {
     for (int i = 0; i < n -1; ++i) {
         if (a[i] > a[i + 1])
-            return true;
+            return false;
     }
-    return false;
+    return true;
 }
 
-int main(int argc, char * args[]) {
+int main (int argc, char * args[]) {
     int a[1000];
     for (int i = 0; i < 1000; ++i) a[i] = -50 + rand() % 100;
-    mergeSort(a, 1000);
+    merge_sort(a, 0, 999);
     assert(sorted(a, 1000));
-	int b[1001];
+    int b[1001];
     for (int i = 0; i < 1001; ++i) b[i] = -50 + rand() % 100;
-	mergeSort(b, 1001);
-	assert(sorted(b, 1001));
-	int c[] = { 2 };
-	mergeSort(c, 1);
-	assert(sorted(c, 1));
-	int d[] = { 1, 2, 3, 4, 5 };
-	mergeSort(d, 5);
-	assert(sorted(d, 5));
-
+    merge_sort(b, 0, 1000);
+    assert(sorted(b, 1001));
+    int c[] = { 2 };
+    merge_sort(c, 0, 1);
+    assert(sorted(c, 1));
+    int d[] = { 1, 2, 3, 4, 5 };
+    merge_sort(d, 0, 4);
+    assert(sorted(d, 5));
     std::cout << "All tests passed." << std::endl;
 }

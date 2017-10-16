@@ -2,14 +2,14 @@
 #include <iostream>
 #include <vector>
 
-void merge(int a[], int from, int mid, int to) {
-    int n = to - from + 1;
+void merge(int a[], int start, int mid, int end) {
+    int n = end - start + 1;
     std::vector<int> b(n);
-    int i1 = from;
+    int i1 = start;
     int i2 = mid + 1;
     int j = 0;
 
-    while (i1 <= mid && i2 <= to) {
+    while (i1 <= mid && i2 <= end) {
         if (a[i1] < a[i2]) {
             b[j] = a[i1];
             i1++;
@@ -26,13 +26,13 @@ void merge(int a[], int from, int mid, int to) {
         i1++;
         j++;
     }
-    while (i2 <= to) {
+    while (i2 <= end) {
         b[j] = a[i2];
         i2++;
         j++;
     }
     for (j = 0; j < n; j++)
-        a[from + j] = b[j];
+        a[start + j] = b[j];
 }
 
 void merge_sort(int a[], int from, int to) {

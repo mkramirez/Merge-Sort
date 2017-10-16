@@ -98,5 +98,5 @@ fabric.properties
 .idea/misc.xml
 .idea/modules.xml
 
-mainTest.cpp
 CMakeLists.txt
+.idea/
